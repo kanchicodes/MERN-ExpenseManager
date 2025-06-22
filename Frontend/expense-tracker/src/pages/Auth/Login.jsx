@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import AuthLayout from '../../components/layouts/AuthLayout';
 import { useNavigate } from 'react-router-dom';
 import Input from '../../components/Inputs/input';
+import { validateEmail } from '../../utils/helper'; 
+
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -16,10 +18,9 @@ const Login = () => {
    
 
     if (!validateEmail(email)) {
-      setError('Please enter a valid email address');
+      setError('Please enter a valid email address.');
       return;
     }
-
    
 
     if (!password) {
@@ -49,14 +50,14 @@ const Login = () => {
 
           <Input
             value={password}
-            onChange={({ target }) => setEmail(target.value)}
+            onChange={({ target }) => setPassword(target.value)} 
             label="Password"
             placeholder="Min 8 characters"
             type="password"
           />
 
-          {error && (
-            <p className='text-red-500 text-xs pb-2.5'>{error}</p>)}
+          {error && <p className='text-red-500 text-xs pb-2.5'>{error}</p>}
+            {/* <p>Please enter a valid email address</p> */}
 
           <button type="submit" className=' btn-primary '> Login </button>
 
