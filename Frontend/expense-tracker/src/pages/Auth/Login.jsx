@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import AuthLayout from '../../components/layouts/AuthLayout';
 import { useNavigate } from 'react-router-dom';
 import Input from '../../components/Inputs/input';
-import { validateEmail } from '../../utils/helper'; 
+import { validateEmail } from '../../utils/helper';
+import axiosInstance from '../../utils/axioslnstance';
+import { API_PATHS } from '../../utils/apiPaths';
 
 
 const Login = () => {
@@ -12,24 +14,41 @@ const Login = () => {
 
   const navigate = useNavigate();
 
-//handle Login form submit 
-  const handleLogin = async (e) => { 
+  //handle Login form submit 
+  const handleLogin = async (e) => {
     e.preventDefault();
-   
+
 
     if (!validateEmail(email)) {
       setError('Please enter a valid email address.');
       return;
     }
-   
+
 
     if (!password) {
       setError('Please enter the password');
       return;
-  }
-  setError("");
+    }
+    setError("");
 
-  //Login API call
+    //Login API call
+    try {
+      const response = await axiosInstance.post(API_PATHS.AUTH.LOGIN, {
+        email,
+        password,
+      });
+      const { token, user } = response.data;
+      if (token) {
+        localStorage.setItem('token', token);
+        navigate('/dashboard');
+      }
+    } catch (error) {
+      if (error.response && error.response.data.message) {
+        setError(error.response.data.message);
+      } else {
+        setError('Something wents wrong. Please try again later.');
+      }
+    }
   }
   return (
     <AuthLayout>
@@ -50,14 +69,14 @@ const Login = () => {
 
           <Input
             value={password}
-            onChange={({ target }) => setPassword(target.value)} 
+            onChange={({ target }) => setPassword(target.value)}
             label="Password"
             placeholder="Min 8 characters"
             type="password"
           />
 
           {error && <p className='text-red-500 text-xs pb-2.5'>{error}</p>}
-            {/* <p>Please enter a valid email address</p> */}
+          {/* <p>Please enter a valid email address</p> */}
 
           <button type="submit" className=' btn-primary '> Login </button>
 
