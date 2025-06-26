@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import AuthLayout from '../../components/layouts/AuthLayout';
 import { Link, useNavigate } from 'react-router-dom';
 import Input from '../../components/Inputs/input';
 import { validateEmail } from '../../utils/helper';
 import ProfilePhotoSelector from '../../components/Inputs/ProfilePhotoSelector';
-
+import axios from 'axios';
+import axiosInstance from '../../utils/axioslnstance';
+import { API_PATHS } from '../../utils/apiPaths';
+import uploadImage from '../../utils/uploadimage';
+import { UserContext } from '../../context/UserContext';
 
 
 const SignUp = () => {
@@ -13,8 +17,9 @@ const SignUp = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-
   const [error, setError] = useState(null);
+
+  const { updateUser } = useContext(UserContext);
   const navigate = useNavigate();
 
   //Handle Sign UP Form Submit
@@ -46,11 +51,36 @@ const SignUp = () => {
 
     setError("");
 
-    // Sign Up API call logic goes here
-    // After successful sign up, you can navigate to the login page or dashboard
-    // navigate('/login'); // Example navigation after sign up
+    // Sign Up API call
+    try {
 
-  }
+      //Uploade image if present
+      if (profilepic) {
+        const imagUpRes = await uploadImage(profilepic);
+        profileImageUrl = imagUpRes.data.imageUrl || "";
+      }
+
+      const response = await axiosInstance.post(API_PATHS.AUTH.SIGNUP, {
+        fullname,
+        email,
+        password,
+        profileImageUrl,
+      });
+      const { token, user } = response.data;
+      if (token) {
+        localStorage.setItem('token', token);
+        updateUser(user);
+        navigate('/dashboard');
+      }
+    } catch (error) {
+      if (error.response && error.response.data.message) {
+        // updateUser(user);
+        setError(error.response.data.message);
+      } else {
+        setError('Something wents wrong. Please try again later.');
+      }
+    }
+  };
 
 
   return (
@@ -65,7 +95,7 @@ const SignUp = () => {
         <form onSubmit={handleSignUp}>
 
           <ProfilePhotoSelector image={profilepic} setImage={setProfilePic} />
-          
+
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
