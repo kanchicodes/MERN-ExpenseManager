@@ -1,6 +1,7 @@
 import React from "react";
 import CustomTooltip from "../Charts/CustomTooltip"
 import CustomLegend from "../Charts/CustomLegend"
+const COLORS = ["#875CF5", "#FA2C37", "#FF6900"];
 
 import {
     PieChart,
@@ -27,8 +28,8 @@ const CustomPieChart = ({
                 nameKey="name"
                 cx="50%"
                 cy="50%"
-                outerRadius={130}
-                innerRadius={100}
+                outerRadius={70}
+                innerRadius={55}
                 labelLine={false}
             >
                 {data.map((entry, index) => (
