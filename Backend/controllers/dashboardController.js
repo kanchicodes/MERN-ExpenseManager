@@ -23,7 +23,7 @@ exports.getDashboardData = async (req, res) => {
 
         // Get total expense
         const totalExpense = await Expense.aggregate([
-            { $match: { userId, userObjectId } },
+            { $match: { userId: userObjectId } },
             { $group: { _id: null, total: { $sum: '$amount' } } }
         ]);
 
@@ -56,13 +56,13 @@ exports.getDashboardData = async (req, res) => {
             ...(await Income.find({ userId }).sort({ date: -1 }).limit(5)).map(
                 (txn) => ({
                     ...txn.toObject(),
-                    type: 'income',
+                    type: "income",
                 })
             ),
-            ...(await Income.find({ userId }).sort({ date: -1 }).limit(5)).map(
+            ...(await Expense.find({ userId }).sort({ date: -1 }).limit(5)).map(
                 (txn) => ({
                     ...txn.toObject(),
-                    type: 'expense',
+                    type: "expense",
                 })
             ),
         ].sort((a, b) => b.date - a.date);

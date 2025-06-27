@@ -57,10 +57,10 @@ const SignUp = () => {
       //Uploade image if present
       if (profilepic) {
         const imagUpRes = await uploadImage(profilepic);
-        profileImageUrl = imagUpRes.data.imageUrl || "";
+        profileImageUrl = imagUpRes.imageUrl || "";
       }
 
-      const response = await axiosInstance.post(API_PATHS.AUTH.SIGNUP, {
+      const response = await axiosInstance.post(API_PATHS.AUTH.REGISTER, {
         fullname,
         email,
         password,
@@ -76,8 +76,10 @@ const SignUp = () => {
       if (error.response && error.response.data.message) {
         // updateUser(user);
         setError(error.response.data.message);
+        console.error(error)
       } else {
         setError('Something wents wrong. Please try again later.');
+        console.error(error)
       }
     }
   };

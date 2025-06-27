@@ -41,9 +41,7 @@ exports.registerUser = async (req, res) => {
         });
 
     } catch (error) {
-        res
-            .status(500)
-            .json({ message: 'Error restering user', error: err.message });
+        res.status(500).json({ message: 'Error restering user', error: error.message });
     }
 };
 
@@ -68,10 +66,8 @@ exports.loginUser = async (req, res) => {
             token: generateToken(user._id),
         });
 
-    } catch (error) {
-        res
-            .status(500)
-            .json({ message: 'Error Resistering user', error: err.message });
+    }catch (error) {
+        res.status(500).json({ message: 'Error logging in user', error: error.message });
     }
 }
 
@@ -91,8 +87,6 @@ exports.getUserInfo = async (req, res) => {
 
 
     } catch (error) {
-        res
-            .status(500)
-            .json({ message: 'Error registing user', error: err.message });
+        res.status(500).json({ message: 'Error registing user', error: error.message });
     }
 }
