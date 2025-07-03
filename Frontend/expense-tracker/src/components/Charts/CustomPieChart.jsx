@@ -16,7 +16,7 @@ const CustomPieChart = ({
     data,
     label,
     totalAmount,
-    colors,
+    colors = COLORS,
     showTextAnchor,
 }) => {
     console.log("Pie chart data:", data);

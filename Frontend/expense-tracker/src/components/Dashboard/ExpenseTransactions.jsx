@@ -1,6 +1,6 @@
 import React from "react";
 import { LuArrowRight } from "react-icons/lu";
-import TransactinInfoCard from "../Cards/TransactinInfoCard";
+import TransactionInfoCard from "../Cards/TransactionInfoCard";
 
 
 const ExpenseTransactions = ({ transactions, onSeeMore }) => {
@@ -14,8 +14,8 @@ const ExpenseTransactions = ({ transactions, onSeeMore }) => {
                 </button>
             </div>
             <div className="mt-6">
-                {transactions?.slice(0, 5)?.map((expense) => (
-                    <TransactinInfoCard
+                {transactions?.slice(0, 4)?.map((expense) => (
+                    <TransactionInfoCard
                         key={Expense._id}
                         title={expense.category}
                         icon={expense.icon}

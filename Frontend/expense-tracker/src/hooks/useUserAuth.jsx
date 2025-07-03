@@ -4,7 +4,7 @@ import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 import {  API_PATHS } from "../utils/apiPaths";//Make sure to import these if not already
-import axiosInstance from "../utils/axioslnstance";
+import axiosInstance from "../utils/axiosInstance";
 export const useUserAuth = () => {
     const { user, updateUser, clearUser } = useContext(UserContext);
     const navigate = useNavigate();
